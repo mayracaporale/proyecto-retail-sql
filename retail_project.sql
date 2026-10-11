@@ -1,6 +1,6 @@
 
 
--- 1. CREAR LA BASE DE DATOS
+
 IF DB_ID('retail_project') IS NULL
 BEGIN
     CREATE DATABASE retail_project;
@@ -10,7 +10,7 @@ GO
 USE retail_project;
 GO
 
--- 2. CREAR TABLA CLIENTES
+
 IF OBJECT_ID('dbo.clientes', 'U') IS NULL
 BEGIN
     CREATE TABLE clientes (
@@ -25,7 +25,7 @@ BEGIN
 END;
 GO
 
--- 3. CREAR TABLA PRODUCTOS
+
 IF OBJECT_ID('dbo.productos', 'U') IS NULL
 BEGIN
     CREATE TABLE productos (
@@ -42,7 +42,7 @@ BEGIN
 END;
 GO
 
--- 4. CREAR TABLA VENTAS AL FINAL
+
 IF OBJECT_ID('dbo.ventas', 'U') IS NULL
 BEGIN
     CREATE TABLE ventas (
@@ -70,11 +70,11 @@ BEGIN
 END;
 GO
 
--- 5. CARGA INICIAL Y MANTENIMIENTO
+
 BEGIN TRY
     BEGIN TRANSACTION;
 
-    -- CLIENTES: cinco registros iniciales
+    
     IF NOT EXISTS (SELECT 1 FROM clientes)
     BEGIN
         INSERT INTO clientes
@@ -87,7 +87,7 @@ BEGIN TRY
             ('Valentina', 'Lopez', 'valentina.lopez@email.com', 31);
     END;
 
-    -- PRODUCTOS: cinco registros iniciales
+    
     IF NOT EXISTS (SELECT 1 FROM productos)
     BEGIN
         INSERT INTO productos
@@ -100,7 +100,7 @@ BEGIN TRY
             ('Soporte para notebook', 'Accesorios', 22000.00, 30);
     END;
 
-    -- VENTAS: cinco registros iniciales
+    
     IF NOT EXISTS (SELECT 1 FROM ventas)
     BEGIN
         INSERT INTO ventas
@@ -114,8 +114,7 @@ BEGIN TRY
             (5, 4, 1, '2026-02-09', 850000.00);
     END;
 
-    -- 6. UPDATE: actualizar precios de Accesorios
--- Verificar los precios antes de actualizarlos
+    
 SELECT id_producto, nombre, categoria, precio
 FROM productos
 WHERE categoria = 'Accesorios';
@@ -137,7 +136,7 @@ WHERE categoria = 'Accesorios';
           'Soporte para notebook'
       );
 
-    -- 7. DELETE: crear y eliminar una venta de prueba
+    
     DECLARE @id_venta_prueba INT;
 
     INSERT INTO ventas
@@ -148,18 +147,18 @@ WHERE categoria = 'Accesorios';
 
     SET @id_venta_prueba = SCOPE_IDENTITY();
 
-    -- Verificar la venta de prueba antes de eliminarla
+    
 SELECT *
 FROM ventas
 WHERE id_venta = @id_venta_prueba;
 
 
--- Eliminar únicamente la venta de prueba
+
 DELETE FROM ventas
 WHERE id_venta = @id_venta_prueba;
 
 
--- Comprobar que la venta ya no existe
+
 SELECT *
 FROM ventas
 WHERE id_venta = @id_venta_prueba;
@@ -176,7 +175,7 @@ BEGIN CATCH
 END CATCH;
 GO
 
--- 8. CONSULTAS DE VERIFICACION
+
 SELECT * FROM clientes;
 SELECT * FROM productos;
 SELECT * FROM ventas;
