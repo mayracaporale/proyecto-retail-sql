@@ -119,12 +119,12 @@ BEGIN TRY
     END;
 
     -- 6. UPDATE: actualizar precios de Accesorios
-    -- Los valores quedan definidos para evitar
-    -- aumentarlos repetidamente al ejecutar el script.
 -- Verificar los precios antes de actualizarlos
 SELECT id_producto, nombre, categoria, precio
 FROM productos
 WHERE categoria = 'Accesorios';
+
+    
 
     UPDATE productos
     SET precio =
