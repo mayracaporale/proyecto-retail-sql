@@ -1,4 +1,9 @@
 
+-- PROYECTO RETAIL
+-- Motor: Microsoft SQL Server
+-- Objetivo: crear tablas, insertar datos y practicar UPDATE y DELETE.
+
+-- 1. Crear la base de datos
 IF DB_ID('retail_project') IS NULL
 BEGIN
     CREATE DATABASE retail_project;
@@ -8,7 +13,7 @@ GO
 USE retail_project;
 GO
 
-
+-- 2. Crear tabla de clientes
 IF OBJECT_ID('dbo.clientes', 'U') IS NULL
 BEGIN
     CREATE TABLE dbo.clientes (
@@ -23,7 +28,7 @@ BEGIN
 END;
 GO
 
-
+-- 3. Crear tabla de productos
 IF OBJECT_ID('dbo.productos', 'U') IS NULL
 BEGIN
     CREATE TABLE dbo.productos (
@@ -38,7 +43,7 @@ BEGIN
 END;
 GO
 
-
+-- 4. Crear tabla de ventas con claves foráneas
 IF OBJECT_ID('dbo.ventas', 'U') IS NULL
 BEGIN
     CREATE TABLE dbo.ventas (
@@ -60,7 +65,7 @@ BEGIN
 END;
 GO
 
-
+-- 5. Insertar cinco registros iniciales por tabla
 BEGIN TRY
     BEGIN TRANSACTION;
 
@@ -101,12 +106,12 @@ BEGIN TRY
             (5, 4, 1, '2026-02-09', 850000.00);
     END;
 
-    
+    -- 6. Ver precios de Accesorios antes de actualizarlos
     SELECT id_producto, nombre, categoria, precio
     FROM dbo.productos
     WHERE categoria = 'Accesorios';
 
-    
+    -- 7. Actualizar precios de productos de Accesorios
     UPDATE dbo.productos
     SET precio =
         CASE nombre
@@ -122,12 +127,12 @@ BEGIN TRY
           'Soporte para notebook'
       );
 
-    
+    -- 8. Verificar los precios después del UPDATE
     SELECT id_producto, nombre, categoria, precio
     FROM dbo.productos
     WHERE categoria = 'Accesorios';
 
-    
+    -- 9. Insertar una venta temporal de prueba
     DECLARE @id_venta_prueba INT;
 
     INSERT INTO dbo.ventas
@@ -138,16 +143,16 @@ BEGIN TRY
 
     SET @id_venta_prueba = CONVERT(INT, SCOPE_IDENTITY());
 
-    
+    -- 10. Comprobar la venta antes de eliminarla
     SELECT *
     FROM dbo.ventas
     WHERE id_venta = @id_venta_prueba;
 
-    
+    -- 11. Eliminar solamente la venta temporal
     DELETE FROM dbo.ventas
     WHERE id_venta = @id_venta_prueba;
 
-    
+    -- 12. Comprobar que la venta ya no existe
     SELECT *
     FROM dbo.ventas
     WHERE id_venta = @id_venta_prueba;
@@ -164,9 +169,8 @@ BEGIN CATCH
 END CATCH;
 GO
 
-
+-- 13. Consultas finales para verificar las tres tablas
 SELECT * FROM dbo.clientes;
 SELECT * FROM dbo.productos;
 SELECT * FROM dbo.ventas;
 GO
-
