@@ -1,8 +1,4 @@
 
--- =============================================
--- PROYECTO RETAIL - SQL SERVER
--- Pre-entrega: Tablas, restricciones y datos
--- =============================================
 
 -- 1. CREAR LA BASE DE DATOS
 IF DB_ID('retail_project') IS NULL
