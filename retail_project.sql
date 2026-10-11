@@ -121,6 +121,11 @@ BEGIN TRY
     -- 6. UPDATE: actualizar precios de Accesorios
     -- Los valores quedan definidos para evitar
     -- aumentarlos repetidamente al ejecutar el script.
+-- Verificar los precios antes de actualizarlos
+SELECT id_producto, nombre, categoria, precio
+FROM productos
+WHERE categoria = 'Accesorios';
+
     UPDATE productos
     SET precio =
         CASE nombre
@@ -147,8 +152,19 @@ BEGIN TRY
 
     SET @id_venta_prueba = SCOPE_IDENTITY();
 
-    DELETE FROM ventas
-    WHERE id_venta = @id_venta_prueba;
+    -- Verificar la venta de prueba antes de eliminarla
+SELECT *
+FROM ventas
+WHERE id_venta = @id_venta_prueba;
+
+-- Eliminar únicamente la venta de prueba
+DELETE FROM ventas
+WHERE id_venta = @id_venta_prueba;
+
+-- Comprobar que la venta ya no existe
+SELECT *
+FROM ventas
+WHERE id_venta = @id_venta_prueba;
 
     COMMIT TRANSACTION;
     PRINT 'Proceso completado correctamente.';
