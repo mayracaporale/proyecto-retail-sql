@@ -158,7 +158,18 @@ FROM ventas
 WHERE id_venta = @id_venta_prueba;
 
 -- Eliminar únicamente la venta de prueba
+-- Verificar la venta de prueba antes de eliminarla
+SELECT *
+FROM ventas
+WHERE id_venta = @id_venta_prueba;
+
+-- Eliminar únicamente la venta de prueba
 DELETE FROM ventas
+WHERE id_venta = @id_venta_prueba;
+
+-- Comprobar que la venta ya no existe
+SELECT *
+FROM ventas
 WHERE id_venta = @id_venta_prueba;
 
 -- Comprobar que la venta ya no existe
