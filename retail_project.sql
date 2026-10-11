@@ -1,6 +1,4 @@
 
-
-
 IF DB_ID('retail_project') IS NULL
 BEGIN
     CREATE DATABASE retail_project;
@@ -13,7 +11,7 @@ GO
 
 IF OBJECT_ID('dbo.clientes', 'U') IS NULL
 BEGIN
-    CREATE TABLE clientes (
+    CREATE TABLE dbo.clientes (
         id_cliente INT IDENTITY(1,1) PRIMARY KEY,
         nombre VARCHAR(100) NOT NULL,
         apellido VARCHAR(100) NOT NULL,
@@ -28,16 +26,14 @@ GO
 
 IF OBJECT_ID('dbo.productos', 'U') IS NULL
 BEGIN
-    CREATE TABLE productos (
+    CREATE TABLE dbo.productos (
         id_producto INT IDENTITY(1,1) PRIMARY KEY,
         nombre VARCHAR(100) NOT NULL,
         categoria VARCHAR(50) NOT NULL,
         precio DECIMAL(10,2) NOT NULL,
         stock INT NOT NULL,
-        CONSTRAINT CK_productos_precio
-            CHECK (precio > 0),
-        CONSTRAINT CK_productos_stock
-            CHECK (stock >= 0)
+        CONSTRAINT CK_productos_precio CHECK (precio > 0),
+        CONSTRAINT CK_productos_stock CHECK (stock >= 0)
     );
 END;
 GO
@@ -45,27 +41,21 @@ GO
 
 IF OBJECT_ID('dbo.ventas', 'U') IS NULL
 BEGIN
-    CREATE TABLE ventas (
+    CREATE TABLE dbo.ventas (
         id_venta INT IDENTITY(1,1) PRIMARY KEY,
         id_cliente INT NOT NULL,
         id_producto INT NOT NULL,
         cantidad INT NOT NULL,
         fecha_venta DATE NOT NULL,
         precio_unitario DECIMAL(10,2) NOT NULL,
-
         CONSTRAINT FK_ventas_clientes
             FOREIGN KEY (id_cliente)
-            REFERENCES clientes(id_cliente),
-
+            REFERENCES dbo.clientes(id_cliente),
         CONSTRAINT FK_ventas_productos
             FOREIGN KEY (id_producto)
-            REFERENCES productos(id_producto),
-
-        CONSTRAINT CK_ventas_cantidad
-            CHECK (cantidad > 0),
-
-        CONSTRAINT CK_ventas_precio
-            CHECK (precio_unitario > 0)
+            REFERENCES dbo.productos(id_producto),
+        CONSTRAINT CK_ventas_cantidad CHECK (cantidad > 0),
+        CONSTRAINT CK_ventas_precio CHECK (precio_unitario > 0)
     );
 END;
 GO
@@ -74,10 +64,9 @@ GO
 BEGIN TRY
     BEGIN TRANSACTION;
 
-    
-    IF NOT EXISTS (SELECT 1 FROM clientes)
+    IF NOT EXISTS (SELECT 1 FROM dbo.clientes)
     BEGIN
-        INSERT INTO clientes
+        INSERT INTO dbo.clientes
             (nombre, apellido, email, edad)
         VALUES
             ('Lucia', 'Gomez', 'lucia.gomez@email.com', 29),
@@ -87,10 +76,9 @@ BEGIN TRY
             ('Valentina', 'Lopez', 'valentina.lopez@email.com', 31);
     END;
 
-    
-    IF NOT EXISTS (SELECT 1 FROM productos)
+    IF NOT EXISTS (SELECT 1 FROM dbo.productos)
     BEGIN
-        INSERT INTO productos
+        INSERT INTO dbo.productos
             (nombre, categoria, precio, stock)
         VALUES
             ('Teclado inalambrico', 'Accesorios', 18500.00, 40),
@@ -100,10 +88,9 @@ BEGIN TRY
             ('Soporte para notebook', 'Accesorios', 22000.00, 30);
     END;
 
-    
-    IF NOT EXISTS (SELECT 1 FROM ventas)
+    IF NOT EXISTS (SELECT 1 FROM dbo.ventas)
     BEGIN
-        INSERT INTO ventas
+        INSERT INTO dbo.ventas
             (id_cliente, id_producto, cantidad,
              fecha_venta, precio_unitario)
         VALUES
@@ -115,13 +102,12 @@ BEGIN TRY
     END;
 
     
-SELECT id_producto, nombre, categoria, precio
-FROM productos
-WHERE categoria = 'Accesorios';
+    SELECT id_producto, nombre, categoria, precio
+    FROM dbo.productos
+    WHERE categoria = 'Accesorios';
 
     
-
-    UPDATE productos
+    UPDATE dbo.productos
     SET precio =
         CASE nombre
             WHEN 'Teclado inalambrico' THEN 19425.00
@@ -137,31 +123,34 @@ WHERE categoria = 'Accesorios';
       );
 
     
+    SELECT id_producto, nombre, categoria, precio
+    FROM dbo.productos
+    WHERE categoria = 'Accesorios';
+
+    
     DECLARE @id_venta_prueba INT;
 
-    INSERT INTO ventas
+    INSERT INTO dbo.ventas
         (id_cliente, id_producto, cantidad,
          fecha_venta, precio_unitario)
     VALUES
         (1, 1, 1, '2026-02-10', 18500.00);
 
-    SET @id_venta_prueba = SCOPE_IDENTITY();
+    SET @id_venta_prueba = CONVERT(INT, SCOPE_IDENTITY());
 
     
-SELECT *
-FROM ventas
-WHERE id_venta = @id_venta_prueba;
+    SELECT *
+    FROM dbo.ventas
+    WHERE id_venta = @id_venta_prueba;
 
+    
+    DELETE FROM dbo.ventas
+    WHERE id_venta = @id_venta_prueba;
 
-
-DELETE FROM ventas
-WHERE id_venta = @id_venta_prueba;
-
-
-
-SELECT *
-FROM ventas
-WHERE id_venta = @id_venta_prueba;
+    
+    SELECT *
+    FROM dbo.ventas
+    WHERE id_venta = @id_venta_prueba;
 
     COMMIT TRANSACTION;
     PRINT 'Proceso completado correctamente.';
@@ -176,7 +165,8 @@ END CATCH;
 GO
 
 
-SELECT * FROM clientes;
-SELECT * FROM productos;
-SELECT * FROM ventas;
+SELECT * FROM dbo.clientes;
+SELECT * FROM dbo.productos;
+SELECT * FROM dbo.ventas;
 GO
+
