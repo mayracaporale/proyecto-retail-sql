@@ -79,9 +79,8 @@ Las consultas se desarrollaron y probaron en SQL Server Management Studio (SSMS)
 
 
 
-
-
 ## Archivos del repositorio
 
-- `retail_project.sql`: contiene el código SQL del proyecto.
+- `retail_project.sql`: contiene el código SQL del proyecto principal.
+- `pre-entrega-modulo4.sql`: contiene las tres consultas multicapa de la pre-entrega del Módulo 4.
 - `README.md`: describe el proyecto, su estructura y los pasos para ejecutarlo.
