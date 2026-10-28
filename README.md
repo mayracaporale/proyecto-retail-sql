@@ -63,6 +63,24 @@ Como el proyecto se desarrolla en SQL Server, se utiliza `IDENTITY(1,1)` para ge
 
 Con este proyecto practiqué los conceptos básicos de SQL, la creación de tablas relacionadas, la validación de datos y las operaciones de mantenimiento de una base de datos. También aprendí a utilizar SQL Server Management Studio para ejecutar consultas y comprobar resultados.
 
+
+
+## Pre-entrega del Módulo 4: consultas multicapa
+
+El archivo [`pre-entrega-modulo4.sql`](pre-entrega-modulo4.sql) reúne tres consultas orientadas al análisis de negocio:
+
+1. **Ingresos por categoría:** calcula las unidades vendidas y los ingresos por categoría, filtrando las categorías que superan los $50.000. Como los datos no incluyen costos, el resultado representa ingresos y no ganancia neta.
+2. **Clientes sin compras:** identifica los clientes registrados que no tienen ventas.
+3. **Producto más comprado por cliente:** identifica el producto comprado con mayor frecuencia por cada cliente y muestra la fecha de su última transacción.
+
+Las consultas se desarrollaron y probaron en SQL Server Management Studio (SSMS).
+
+
+
+
+
+
+
 ## Archivos del repositorio
 
 - `retail_project.sql`: contiene el código SQL del proyecto.
